@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.w3.org/1999/xhtml" layout:decorate="~{layout/default_layout}">
+<th:block layout:fragment="content">
+    <div class="container text-center mt-15 mb-15">
+        <h1>접근 거부(403)</h1>
+        <p>죄송합니다. 해당 페이지에 접근할 권한이 없습니다.</p>
+        <p>다시 로그인하려면 <a th:href="@{/loginForm}">여기</a>를 클릭하세요.</p>
+        <p>홈페이지로 돌아가려면 <a th:href="@{/}">여기</a>를 클릭하세요.</p>
+    </div>
+
+</th:block>
+
+</html>
+

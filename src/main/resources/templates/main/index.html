@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.w3.org/1999/xhtml" layout:decorate="~{layout/default_layout}">
+<th:block layout:fragment="content">
+    <div class="container">
+        <!-- section1 -->
+        <div class="row">
+            <div class="col-12 text-center mb-15">
+                <div id="myCarousel" class="carousel slide mainBanner banner " data-ride="carousel">
+                    <!-- Indicators -->
+                    <ul class="carousel-indicators">
+                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#myCarousel" data-slide-to="1"></li>
+                    </ul>
+
+                    <div class="carousel-inner color-fff">
+                        <div class="carousel-item active">
+                            <h3>사지말고 입양하세요!</h3>
+                            <div class="mb-15"><b>근처 보호소를 지도로 확인하시고 방문해보세요.</b></div>
+                            <div><a th:href="@{/ShelterM}" class="btn bg_03A3F1 color-fff">지도로 보호소 보러가기</a> </div>
+                        </div>
+
+                        <div class="carousel-item">
+                            <h3>사지말고 입양하세요!</h3>
+                            <div class="mb-15"><b>보호소 확인하시고 방문해보세요.</b></div>
+                            <div><a th:href="@{/ShelterL}" class="btn bg_03A3F1 color-fff">리스트로 보호소 보러가기</a> </div>
+                        </div>
+                    </div>
+
+                    <!-- Left and right controls -->
+                    <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </a>
+                    <a class="carousel-control-next" href="#myCarousel" data-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- section2 -->
+        <section class="mt-15 mb-15">
+            <div class="text-center">
+                <h3>유기동물의 <strong style="color:#03A3F1">가족</strong>이 되어주세요.</h3>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-lg-3 col-sm-6 col-6 mb-15" th:each="protect : ${protectList}">
+                    <a th:href="@{${'/protectV/'+protect.id}}" class="color-000">
+                        <div class="card">
+
+                            <div th:style="' background-image: url(\'../static/img/protect/' + ${protect.imagePath} + '\')'" th:class="${protect.isProtect == 1} ? 'img end' : 'img'"></div>
+
+                            <!--                            <img class="card-img-top" th:src="'img/protect/'+${protect.imagePath}" alt="Card image">-->
+                            <div class="card-body">
+                                <h4 class="card-title" >
+                                    <span th:text="${protect.kind == 'dog' ? '강아지' : (protect.kind == 'cat' ? '고양이' : '기타')}"></span>
+                                    (<span th:text="${protect.gender == 'f' ? '암컷' : (protect.gender == 'm' ? '수컷' : '미상')}"></span>)
+                                </h4>
+                                <div class="card-text">
+                                    <div>
+                                        <strong>공고 번호 :</strong><br>
+                                        <span th:text="${protect.sido + '-' + protect.sigungu + '-' + protect.byYear + '-' + protect.num}"></span>
+                                    </div>
+                                    <hr>
+                                    <div>
+                                        <strong>발견 장소 :</strong><br>
+                                        <span th:text="${protect.place}">place</span>
+                                    </div>
+                                    <hr>
+                                    <div>
+                                        <strong>구조시 특징 :</strong><br>
+                                        <span th:text="${protect.character}">character</span>
+                                    </div>
+                                    <hr>
+                                    <div>
+                                        <strong>접수 일시 :</strong><br>
+                                        <span th:text="${protect.date}">date</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="text-center">
+                <a href="#" class="btn bg_03A3F1 color-fff">보호동물 더보기</a>
+            </div>
+
+        </section>
+
+        <!-- section3 -->
+        <section class="mt-15 mb-15">
+            <div class="row mt-15 mb-15">
+                <div class="col-12 text-center">
+                    <div class="carousel slide mainSubBanner banner" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active ">
+                                <h3>사지않고 입양했어요!</h3>
+                                <div class="mb-15"><b>입양하신 분들의 후기를 봐보세요.</b></div>
+                                <div><a th:href="@{/communityL}" class="btn bg_03A3F1 color-fff">입양후기 보러가기</a> </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- section4 -->
+        <section class="mt-15 mb-15 ">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <div class="carousel slide mainSubBanner mainSubBanner2 banner" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active color-fff">
+                                <h3>보호센터를 등록해보세요!</h3>
+                                <div><b>주변에 많은 사람들이 보호센터가 있는지 몰라요.</b></div>
+                                <div class="mb-15"><b>많은 사람들이 보호센터를 확인할 수 있도록 등록해주세요.</b></div>
+                                <div><a th:href="@{/}" class="btn bg_03A3F1 color-fff">센터 등록하러가기</a> </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</th:block>
+
+</html>
+

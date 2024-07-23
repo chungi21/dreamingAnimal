@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<th:block layout:fragment="content">
+
+    <style>
+        img {
+            max-width: 100%;
+        }
+    </style>
+    <div class="container">
+        <div class="row-cols-*">
+            <section>
+                <!-- 글 내용 부분 -->
+                <div>
+                    <div class="col-12 mt-15 mb-15">
+                        <div class="d-flex flex-row-reverse bg-secondar">
+                            <div>
+
+                                <a th:href="@{/communityL}" class="btn btn-primary ">목록</a>
+<!--                                <a th:href="@{/communityU/${board.id}" class="btn btn-success " sec:authorize="isAuthenticated()"  th:if="${board.username == #authentication.principal.username}">수정</a>-->
+<!--                                <a th:href="@{${'/communityU?id='+board.id}}" class="btn btn-success " sec:authorize="isAuthenticated()"  th:if="${board.username == #authentication.principal.username} and ${replies == null or #lists.isEmpty(replies)}">수정</a>-->
+                                <a th:href="@{${'/communityU/'+board.id}}" class="btn btn-success " sec:authorize="isAuthenticated()" th:if="${board.username == #authentication.principal.username} and ${replies == null or #lists.isEmpty(replies)}">수정</a>
+                                <a th:href="@{${'/communityU/'+board.id}}" class="btn btn-success " sec:authorize="isAuthenticated()" th:if="${board.username == #authentication.principal.username} and ${replies != null and not #lists.isEmpty(replies)}"  onclick="alert('댓글이 있는 경우 해당 게시물 수정이 불가합니다.');event.preventDefault();">수정</a>
+<!--                                <a th:href="#" class="btn btn-success " sec:authorize="isAuthenticated()"  th:if="${replies != null and not #lists.isEmpty(replies)}">수정</a>-->
+
+<!--                                <a th:href="@{${'/communityU?id='+board.id}}" class="btn btn-success " sec:authorize="isAuthenticated()"  th:if="${board.username == #authentication.principal.username} and ${replies == null or #lists.isEmpty(replies)}">수정</a>-->
+<!--                                <a th:href="#" class="btn btn-success " sec:authorize="isAuthenticated()"  th:if="${board.username == #authentication.principal.username} and ${replies != null and not #lists.isEmpty(replies)}">수정</a>-->
+<!--                                -->
+
+<!--                                <a th:href="@{${'/communityU/'+board.id}}" class="btn btn-success " sec:authorize="isAuthenticated()"  th:if="${board.username == #authentication.principal.username}">수정</a>-->
+                                <a th:href="@{${'/communityD/'+board.id}}" class="btn btn-success " sec:authorize="isAuthenticated()" th:if="${board.username == #authentication.principal.username} and ${replies == null or #lists.isEmpty(replies)}" th:onclick="return confirm('해당 게시물을 삭제하시겠습니까?');">삭제</a>
+                                <a th:href="@{${'/communityD/'+board.id}}" class="btn btn-success " sec:authorize="isAuthenticated()" th:if="${board.username == #authentication.principal.username} and ${replies != null and not #lists.isEmpty(replies)}"  onclick="alert('댓글이 있는 경우 해당 게시물 삭제가 불가합니다.');event.preventDefault();">삭제</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 mb-30">
+                        <h3 th:text="${board.title}">제목</h3>
+                        <div>작성자 : <span th:text="${board.username}"></span> / 작성 날짜 :  <span th:text="${board.createDate}"></span>  / 조회 수 : <span th:text="${board.count}"></span> </div>
+                    </div>
+                    <div class="col-12 mb-15">
+                        <div class="layout">
+
+                            <div th:text="${board.content}" id="content">내용</div>
+
+    <!--                        <img th:src="${'Users/hajinny/Desktop/project/dreamingAnimal/src/main/resources/static/files/community//1710388198942-052c30be-7b70-43c3-aed2-deafa3161c91.png'}"/>-->
+    <!--                        <img src="webapp/Users/hajinny/Desktop/project/dreamingAnimal/src/webapp/files/community/1710388198942-052c30be-7b70-43c3-aed2-deafa3161c91.png"/>-->
+    <!--                        <img src="files/community/1710388198942-052c30be-7b70-43c3-aed2-deafa3161c91.png"/>-->
+    <!--                        <img src="img/test.jpeg"/>-->
+                            <div th:each="imgfileList: ${boardFileList}">
+                                <img  th:src="'img/community/'+${imgfileList.storedFileName}+'?ver='+${uuid}" >
+                            </div>
+
+<!--                            <table class="list-group">-->
+<!--                                <th>-->
+<!--                                    <tr class="list-group-item list-group-item-action active">-->
+<!--                                        <th style="width:60px;">no</th>-->
+<!--                                        <th >제목</th>-->
+<!--                                    </tr>-->
+<!--                                </th>-->
+<!--                                <tbody>-->
+<!--                                <tr th:each="board: ${boardFileList}" class="list-group-item list-group-item-action">-->
+<!--                                    <td th:text="${board.id}" style="width:60px;"></td>-->
+<!--                                    <td th:text="${board.originalFileName}" style="width:60px;"></td>-->
+<!--                                    <td th:text="${board.storedFileName}" style="width:60px;"></td>-->
+<!--                                </tr>-->
+<!--                                </tbody>-->
+
+<!--                            </table>-->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 댓글 내용 부분 -->
+
+                <div  class="card" sec:authorize="isAuthenticated()">
+                    <div class="card-header">
+                        <div id="reply-write">댓글 쓰기</div>
+                    </div>
+                    <div class="card-body" id="reply-card-body">
+                        <form>
+                            <input type="hidden" id="boardId" th:value="${board.id}">
+    <!--                        <input type="hidden" name="username" id="username" placeholder="username" th:value="${#authentication.principal.username}" >-->
+
+                            <textarea id="reply-content" rows="3"  class="form-control mb-15"></textarea>
+
+                        </form>
+                    </div>
+                    <div class="card-footer">
+                        <button id="btn-reply-save" class="btn btn-primary">등록</button>
+                        <button id="btn-reply-update" class="btn btn-primary d-none">수정 등록</button>
+                        <button id="btn-reply-update-cancel" class="btn btn-primary d-none">수정 취소</button>
+                    </div>
+                </div>
+                <br>
+                <div class="card">
+                    <div class="card-header">댓글</div>
+                    <div class="card-body">
+                        <div th:if="${replies == null or #lists.isEmpty(replies)}">
+                            <!-- replies 리스트가 비어있을 때 -->
+                            <p>댓글이 없습니다.</p>
+                        </div>
+
+                        <ul id="reply-box" class="list-group" th:if="${replies != null and not #lists.isEmpty(replies)}">
+
+                            <li th:each="reply : ${replies}" class="list-group-item ">
+                                <div class="d-flex">
+
+                                    <span th:text="${reply.username}" class="">작성자 : test&nbsp;</span>&nbsp;&nbsp;
+                                    <button class="btn-xs btn-success reply-update" sec:authorize="isAuthenticated()" th:if="${reply.username == #authentication.principal.username}" th:attr="data-reply-id=${reply.id}">수정</button>&nbsp;
+                                    <button class="btn-xs btn-danger reply-delete" sec:authorize="isAuthenticated()" th:if="${reply.username == #authentication.principal.username}" th:attr="data-reply-id=${reply.id}">삭제</button>
+                                </div>
+                                <div th:text="${reply.content}" th:attr="data-reply-content=${reply.content}">댓글 내용!</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+
+            </section>
+        </div>
+
+    </div>
+
+    <script th:inline="javascript">
+        var text = $("#content").text();
+        text = text.replace(/(?:\r\n|\r|\n)/g, '<br>');
+        const element = document.getElementById('content');
+        element.innerHTML = text;
+    </script>
+    <script type="text/javascript" th:src="@{/static/js/reply.js}"></script>
+
+
+</th:block>
+
+
+</html>

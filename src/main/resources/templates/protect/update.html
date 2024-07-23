@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<th:block layout:fragment="content">
+    <div class="container">
+        <div class="row-cols-*">
+
+            <section sec:authorize="isAuthenticated()">
+                <div class="col-12 mb-30 text-center">
+                    <h3>커뮤니티 글 수정하기</h3>
+                </div>
+                <div class="col-12 mb-15">
+                    <form method="post" action="/protectU" enctype="multipart/form-data">
+                        <input type="hidden" name="username" Id="username" placeholder="username" th:value="${#authentication.principal.username}" >
+                        <input type="text" name="id" Id="id" placeholder="id" th:value="${board.id}" >
+                        <input type="text" name="fileAttached" Id="fileAttached" placeholder="fileAttached" th:value="${board.fileAttached}" >
+
+
+                        <div class="form-group">
+                            <label for="sido">공고번호</label>
+                            <input type="text" name="sido" Id="sido" placeholder="공고번호 시도" th:value="${board.sido}" required>
+                            <input type="text" name="sigungu" Id="sigungu" placeholder="공고번호 시군구" th:value="${board.sigungu}" required>
+                            <input type="text" name="byYear" Id="byYear" placeholder="공고번호 년도" th:value="${board.byYear}" required>
+                            <input type="text" name="num" Id="num" placeholder="공고번호 숫자" th:value="${board.num}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="kind">품종</label>
+                            <select name="kind" id="kind">
+                                <option value="dog" th:attr="selected=${board.kind == 'dog'}">강아지</option>
+                                <option value="cat" th:attr="selected=${board.kind == 'cat'}">고양이</option>
+                                <option value="ect" th:attr="selected=${board.kind == 'ect'}">기타</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="gender">품종</label>
+                            <select name="gender" id="gender">
+                                <option value="f" th:attr="selected=${board.gender == 'f'}">암컷</option>
+                                <option value="m" th:attr="selected=${board.gender == 'm'}">숫컷</option>
+                                <option value="q" th:attr="selected=${board.gender == 'q'}">미상</option>
+                            </select>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label for="color">색상</label>
+                            <input type="text" name="color" Id="color" th:value="${board.color}" placeholder="색상 입력해주세요.">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="color">나이</label>
+                            <input type="text" name="age" Id="age" th:value="${board.age}" placeholder="나이 입력해주세요." >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="color">체중</label>
+                            <input type="text" name="weight" Id="weight" th:value="${board.weight}" placeholder="체중 입력해주세요.(단위:Kg)" >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="color">구조 시 특징</label>
+                            <input type="text" name="character" Id="character" th:value="${board.character}" placeholder="구조 시 특징을 입력해주세요.">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="color">발견장소</label>
+                            <input type="text" name="place" Id="place" th:value="${board.place}" placeholder="발견장소을 입력해주세요.">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="color">접수일시</label>
+                            <input type="date" name="date" Id="date" th:value="${board.date}">
+                        </div>
+
+                        <div id="inputFile">
+                            <div class="form-group" th:if="${board.fileAttached}==1" th:each="boardFile : ${boardFileList}">
+                                <label>파일 - 이미지 첨부(png, jpeg, jpg만 가능합니다.)</label><br>
+                                <input name="files" type="file" accept="image/png, image/jpeg, image/jpg" ><br>
+                                첨부 되어있는 파일 : <span th:text="${boardFile.originalFileName}"></span>
+                            </div>
+                        </div>
+
+                        <button class="btn bg_03A3F1 color-fff" type="submit">수정 완료</button>
+                    </form>
+
+                </div>
+            </section>
+            <section>
+                <div class="text-center" sec:authorize="isAnonymous()">
+                    <div>로그인한 회원만 글 작성이 가능합니다.</div>
+                    <div><a class="btn btn-primary" th:href="@{/loginForm}"}>로그인 하러가기</a></div>
+                </div>
+
+            </section>
+
+        </div>
+
+    </div>
+    <script type="text/javascript" th:src="@{/static/js/bbs_write.js}"></script>
+    <script>
+        var now_utc = Date.now()
+        var timeOff = new Date().getTimezoneOffset()*60000;
+        var today = new Date(now_utc-timeOff).toISOString().split("T")[0];
+        document.getElementById("date").setAttribute("max", today);
+
+    </script>
+</th:block>
+
+
+</html>

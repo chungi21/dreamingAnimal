@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<th:block layout:fragment="content">
+    <div class="container">
+        <div class="">
+            <section>
+                <div class="row">
+                    <div class="col-12 mb-15 text-center">
+                        <div id="myCarousel" class="carousel slide pageBanner banner" data-ride="carousel">
+
+                            <!-- Indicators -->
+                            <ul class="carousel-indicators">
+                                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                            </ul>
+
+                            <!-- The slideshow -->
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <h3>보호동물</h3>
+                                    <div>보호소에서 보호중인 동물들이예요.<br>보호동물을 입양해보세요!</div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-12 mb-15" sec:authorize="isAuthenticated()">
+                        <div class="d-flex flex-row-reverse bg-secondar">
+                            <div>
+                                <a  th:href="@{/protectW}" class="btn btn-primary" >보호동물 등록</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </section>
+            <div class="row">
+                <div class="col-md-6 col-lg-3 col-sm-6 col-6 mt-15 mb-15" th:each="protect : ${list}">
+                    <a th:href="@{${'/protectV/'+protect.id}}" class="color-000">
+                        <div class="card">
+
+                            <div th:style="' background-image: url(\'/img/protect/' + ${protect.imagePath} + '\')'" th:class="${protect.isProtect == 1} ? 'img end' : 'img'">
+                                <div th:if="${protect.isProtect == 1}">보호 종료</div>
+                            </div>
+
+<!--                            <img class="card-img-top" th:src="'img/protect/'+${protect.imagePath}" alt="Card image">-->
+                            <div class="card-body">
+                                <h4 class="card-title" >
+                                    <span th:text="${protect.kind == 'dog' ? '강아지' : (protect.kind == 'cat' ? '고양이' : '기타')}"></span>
+                                    (<span th:text="${protect.gender == 'f' ? '암컷' : (protect.gender == 'm' ? '수컷' : '미상')}"></span>)
+                                </h4>
+                                <div class="card-text">
+                                    <div>
+                                        <strong>공고 번호 :</strong><br>
+                                        <span th:text="${protect.sido + '-' + protect.sigungu + '-' + protect.byYear + '-' + protect.num}"></span>
+                                    </div>
+                                    <hr>
+                                    <div>
+                                        <strong>발견 장소 :</strong><br>
+                                        <span th:text="${protect.place}">place</span>
+                                    </div>
+                                    <hr>
+                                    <div>
+                                        <strong>구조시 특징 :</strong><br>
+                                        <span th:text="${protect.character}">character</span>
+                                    </div>
+                                    <hr>
+                                    <div>
+                                        <strong>접수 일시 :</strong><br>
+                                        <span th:text="${protect.date}">date</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div th:if="${endPage == 0}" class="text-center mt-15 mb-15">
+                등록되어있는 보호소가 없습니다.
+            </div>
+            <!--  페이징 & 검색-->
+            <div class="col-12 mb-30">
+
+                <div class="d-flex justify-content-center" th:if="${endPage > 0}">
+                    <ul class="pagination">
+                    <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
+                        <li class="page-item">
+                            <a class="page-link" th:if="${page != nowPage}" th:href="@{/CommunityL(page = ${page - 1}, searchKeyword = ${param.searchKeyword})}" th:text="${page}"></a>
+                            <strong class="page-link" th:if="${page == nowPage}" th:text="${page}" style="color : red" ></strong>
+                        </li>
+                    </th:block>
+                    </ul>
+                </div>
+
+
+                <form th:action="@{/protectL}" method="get" class="c-searchForm d-flex">
+                    <input type="text" name="protectNum" id="protectNum" placeholder="공고번호로 검색해보세요." th:value="${protectNum}" class="width100p" >
+                    <input type="date" name="date" id="date" th:value="${date}"  >
+                    <select name="kind" id="kind">
+                        <option value="" th:selected="${kind == ''}">품종</option>
+                        <option value="dog" th:selected="${kind == 'dog'}">강아지</option>
+                        <option value="cat" th:selected="${kind == 'cat'}">고양이</option>
+                        <option value="ect" th:selected="${kind == 'ect'}">기타</option>
+                    </select>
+
+                    <select name="isProtect" id="isProtect">
+                        <option value="" th:selected="${isProtect == ''}">보호상황</option>
+                        <option value="0" th:selected="${isProtect == '0'}">보호중</option>
+                        <option value="1" th:selected="${isProtect == '1'}">보호완료</option>
+                    </select>
+
+                    <select name="gender" id="gender">
+                        <option value="" th:selected="${gender == ''}">성별</option>
+                        <option value="f" th:selected="${gender == 'f'}">암컷</option>
+                        <option value="m" th:selected="${gender == 'm'}">숫컷</option>
+                        <option value="q" th:selected="${gender == 'q'}">미상</option>
+                    </select>
+
+                    <button type="submit" class="btn btn-primary" >검색</button>
+                </form>
+            </div>
+
+        </div>
+
+
+    </div>
+    <script>
+        var now_utc = Date.now()
+        var timeOff = new Date().getTimezoneOffset()*60000;
+        var today = new Date(now_utc-timeOff).toISOString().split("T")[0];
+        document.getElementById("date").setAttribute("max", today);
+
+    </script>
+</th:block>
+
+
+</html>

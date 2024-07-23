@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<th:block layout:fragment="content">
+    <div class="container">
+        <div class="row-cols-*">
+            <section>
+                <div class="col-12 mb-15 text-center">
+                    <div id="myCarousel" class="carousel slide pageBanner banner" data-ride="carousel">
+
+                        <!-- Indicators -->
+                        <ul class="carousel-indicators">
+                            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                        </ul>
+
+                        <!-- The slideshow -->
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <h3>입양 후기 커뮤니티</h3>
+                                <div>더 많은 사람들이 입양에 관심을 가질 수 있도록 <br>입양 후기를 작성해보세요!</div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-12 mb-15 " sec:authorize="isAuthenticated()" >
+                    <div class="d-flex flex-row-reverse bg-secondar">
+                        <div>
+                            <a  th:href="@{/communityW}" class="btn btn-primary" >글쓰기</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 mb-15">
+
+                    <table class="list-group">
+                        <th>
+                            <tr class="list-group-item list-group-item-action active">
+                                <th style="width:60px;">no</th>
+                                <th >제목</th>
+                            </tr>
+                        </th>
+                        <tbody>
+                            <tr th:each="board: ${list}" class="list-group-item list-group-item-action">
+                                <td th:text="${board.id}" style="width:60px;"></td>
+                                <td >
+                                    <a th:text="${board.title}" th:href="@{${'/communityV/'+board.id}}"></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div th:if="${endPage == 0}" class="text-center">
+                        등록되어있는 글이 없습니다.
+                    </div>
+                </div>
+
+                <div class="col-12 mb-30">
+
+                    <div class="d-flex justify-content-center" th:if="${endPage > 0}">
+                        <ul class="pagination">
+                        <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
+                            <li class="page-item">
+                                <a class="page-link" th:if="${page != nowPage}" th:href="@{/communityL(page = ${page - 1}, searchKeyword = ${param.searchKeyword})}" th:text="${page}"></a>
+                                <strong class="page-link" th:if="${page == nowPage}" th:text="${page}" style="color : red" ></strong>
+                            </li>
+                        </th:block>
+                        </ul>
+                    </div>
+
+
+                    <form th:action="@{/communityL}" method="get" class="c-searchForm d-flex">
+                        <input type="text" name="searchKeyword" placeholder="제목으로 검색해보세요." class="width100p">
+                        <button type="submit" class="btn btn-primary" >검색</button>
+                    </form>
+                </div>
+            </section>
+        </div>
+
+
+    </div>
+
+</th:block>
+
+
+</html>

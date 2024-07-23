@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}">
+<th:block layout:fragment="content">
+    <div class="container content">
+        <div class="row justify-content-center">
+            <section class="">
+                <div th:if="${param.error}">
+                    <p th:text="${error}" class="alert alert-danger"></p>
+                </div>
+                <div class="col-12 mb-15 mt-15">
+                    <form action="/login" method="post">
+                        <div class="form-group">
+                            <input type="text" name="username" id="username" placeholder="ID" class="width100p">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="password" name="password" id="password" placeholder="password" class="width100p">
+                        </div>
+
+                        <div class="text-center">
+                            <button class="btn bg_03A3F1 color-fff">로그인</button>
+                        </div>
+                    </form>
+                </div>
+                <hr>
+                <div class="col-12 mb-15 mt-15 text-center snsLogin">
+                    <div class=" mb-15">
+                        <a href="/oauth2/authorization/google" class="googleA">구글 로그인</a>
+                    </div>
+                    <div>
+                        <a href="/oauth2/authorization/naver" class="naverA">네이버 로그인</a>
+                    </div>
+                </div>
+                <hr>
+                <div class="col-12 text-center mt-15">
+                    <a href="/joinForm">회원가입을 아직 하지 않으셨나요?</a>
+                </div>
+            </section>
+        </div>
+
+
+
+        </div>
+    </div>
+
+</th:block>
+
+</html>
+

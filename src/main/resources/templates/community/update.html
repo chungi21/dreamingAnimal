@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<th:block layout:fragment="content">
+    <div class="container">
+        <div class="row-cols-*">
+
+            <section sec:authorize="isAuthenticated()">
+                <div class="col-12 mt-15 mb-15 text-center">
+                    <h3>커뮤니티 글 수정하기</h3>
+                </div>
+                <div class="col-12 mb-15">
+                    <form method="post" action="/communityU" enctype="multipart/form-data">
+                        <input type="hidden" name="id" Id="id" placeholder="id" th:value="${board.id}" >
+                        <input type="hidden" name="count" Id="count" placeholder="count" th:value="${board.count}" >
+                        <input type="hidden" name="username" Id="username" placeholder="username" th:value="${#authentication.principal.username}" >
+
+                        <div class="form-group">
+                            <label for="title">제목</label><br>
+                            <input type="text" name="title" Id="title" th:value="${board.title}" placeholder="제목을 입력해주세요." class="width100p" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="content">내용</label>
+                            <div>
+                               <textarea name="content" id="content" style="width:100%;" th:utext="${board.content}" rows="3" placeholder="내용을 입력해주세요." required></textarea>
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group">
+                            <label>파일 - 이미지 첨부(png, jpeg, jpg만 가능합니다.)</label> <span id="btn-addFile">+</span>
+                        </div>
+
+                        <div id="inputFile">
+                            <div class="form-group" th:if="${board.fileAttached}==1" th:each="boardFile : ${boardFileList}">
+                                <input name="files" type="file" accept="image/png, image/jpeg, image/jpg" ><br>
+                                첨부 되어있는 파일 : <span th:text="${boardFile.originalFileName}"></span><br>
+                                <input name="del" type="checkbox" th:value="${boardFile.id}">첨부 파일 삭제
+                            </div>
+                        </div>
+
+                        <button class="btn bg_03A3F1 color-fff" type="submit">수정 완료</button>
+                    </form>
+
+                </div>
+            </section>
+            <section>
+                <div class="text-center" sec:authorize="isAnonymous()">
+                    <div>로그인한 회원만 글 작성이 가능합니다.</div><br>
+                    <div><a class="btn btn-primary" th:href="@{/loginForm}"}>로그인 하러가기</a></div>
+                </div>
+            </section>
+
+        </div>
+
+    </div>
+    <script type="text/javascript" th:src="@{/static/js/bbsAddFile.js}"></script>
+
+</th:block>
+
+
+</html>

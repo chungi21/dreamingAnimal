@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<th:block layout:fragment="content">
+    <div class="container">
+        <div class="row-cols-*">
+
+            <section sec:authorize="isAuthenticated()">
+                <div class="col-12 mt-15 mb-15 text-center">
+                    <h3>커뮤니티 글쓰기</h3>
+                </div>
+                <div class="col-12 mb-15">
+                    <form method="post" action="/communityW" enctype="multipart/form-data">
+                        <input type="hidden" name="username" Id="username" placeholder="username" th:value="${#authentication.principal.username}" >
+
+                        <div class="form-group">
+                            <label for="title">제목</label><br>
+                            <input type="text" name="title" Id="title" placeholder="제목을 입력해주세요." required class="width100p">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="content">내용</label>
+                            <div>
+                               <textarea name="content" id="content" style="width:100%;" rows="3" placeholder="내용을 입력해주세요." required></textarea>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label>파일 - 이미지 첨부(png, jpeg, jpg만 가능합니다.)</label> <span id="btn-addFile">+</span>
+                        </div>
+
+                        <div id="inputFile">
+                        </div>
+
+
+                        <button class="btn bg_03A3F1 color-fff" type="submit">글쓰기 완료</button>
+                    </form>
+
+                </div>
+            </section>
+
+            <section sec:authorize="isAnonymous()">
+                <div class="text-center">
+                    <div>로그인한 회원만 글 작성이 가능합니다.</div><br>
+                    <div>
+                        <a class="btn btn-primary" th:href="@{/loginForm}"}>로그인 하러가기</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </div>
+    <script type="text/javascript" th:src="@{/static/js/bbsAddFile.js}"></script>
+
+</th:block>
+
+
+</html>

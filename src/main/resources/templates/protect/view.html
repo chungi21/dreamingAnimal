@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<th:block layout:fragment="content">
+
+    <style>
+        img {
+            max-width: 100%;
+        }
+    </style>
+    <div class="container">
+        <div class="row-cols-*">
+            <section>
+                <!-- 글 내용 부분 -->
+                <div>
+                    <div class="col-12 mb-30">
+                        <div class="d-flex flex-row-reverse bg-secondar">
+                            <div>
+                                <a th:href="@{/protectL}" class="btn btn-primary ">목록</a>
+                                <a th:href="@{${'/protectU/'+board.id}}" class="btn btn-success " sec:authorize="isAuthenticated()" th:if="${board.username == #authentication.principal.username}">수정</a>
+                                <a th:href="@{${'/protectD/'+board.id}}" class="btn btn-danger " sec:authorize="isAuthenticated()" th:if="${board.username == #authentication.principal.username}" th:onclick="return confirm('해당 게시물을 삭제하시겠습니까?');">삭제</a>
+
+                                <button class="btn btn-secondary" data-toggle="modal" data-target="#protectEnd" sec:authorize="isAuthenticated()" th:if="${board.username == #authentication.principal.username}">
+                                    보호 종료
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 mb-30">
+
+                    </div>
+                </div>
+
+                <div th:each="imgfileList: ${boardFileList}">
+                    <img  th:src="'img/protect/'+${imgfileList.storedFileName}+'?ver='+${uuid}" >
+                </div>
+
+                <table class="table detail-table">
+                    <caption>보호중 동물을 안내하고있습니다. 입양을 원하시거나 해당 동물을 찾고 계신분은 보호센터로 연락하시길 바랍니다.</caption>
+                    <colgroup>
+                        <col style="width: 160px">
+                        <col style="width: 500px">
+                        <col style="width: 160px">
+                        <col style="width: 500px">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th scope="row" class="first">공고번호</th>
+                            <td class="text-left last" colspan="3">
+                                <span th:text="${board.sido}"></span>-
+                                <span th:text="${board.sigungu}"></span>-
+                                <span th:text="${board.byYear}"></span>-
+                                <span th:text="${board.num}"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="first">품종</th>
+                            <td class="text-left" th:text="${board.kind == 'dog' ? '강아지' : (board.kind == 'cat' ? '고양이' : '기타')}"></td>
+                            <th scope="row">색상</th>
+                            <td class="last" th:text="${board.color}"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="first">성별</th>
+                            <td class="text-left" th:text="${board.gender == 'f' ? '암컷' : (board.gender == 'm' ? '수컷' : '미상')}">암컷</td>
+                            <th scope="row">체중</th>
+                            <td class="text-left last" th:text="${board.weight}"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="first">나이</th>
+                            <td class="text-left" th:text="${board.age}"></td>
+                            <th scope="row">구조시 특징</th>
+                            <td class="text-left last" th:text="${board.character}"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="first">발생장소</th>
+                            <td class="text-left" th:text="${board.place}">광산구 신창동</td>
+                            <th scope="row">접수일시</th>
+                            <td class="text-left last" th:text="${board.date}">2024-06-10&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row" class="first">보호센터</th>
+                            <td class="text-left" th:text="${shelter.title}"></td>
+                            <th scope="row">보호센터연락처</th>
+                            <td class="text-left last" th:text="${shelter.tel}"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="first">보호센터 주소</th>
+                            <td class="text-left last" colspan="3" th:text="${shelter.address} +'&nbsp;'+${shelter.address2}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </section>
+        </div>
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="protectEnd" tabindex="-1" role="dialog" aria-labelledby="protectEnd" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="infoTitle">보호 종료</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <form method="post" th:action="@{${'/protectEnd?id='+board.id}}">
+                        <input type="text" name="endReason">
+                        <input type="submit" value="보호 종료">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        var text = $("#content").text();
+        text = text.replace(/(?:\r\n|\r|\n)/g, '<br>');
+        const element = document.getElementById('content');
+        element.innerHTML = text;
+    </script>
+
+
+</th:block>
+
+
+</html>

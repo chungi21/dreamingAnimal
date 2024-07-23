@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<th:block layout:fragment="content">
+    <div class="container">
+        <div class="row-cols-*">
+
+            <section sec:authorize="isAuthenticated()">
+                <div class="col-12 mt-15 mb-15 text-center">
+                    <h3>보호소 인증 요청하기</h3>
+                </div>
+                <div>
+                    <div>※ 인증 요청 후 서류 확인 후 관리자가 승인을 하기 때문에 요청 후 수정 및 정보 삭제를 원하시면 고객센터로 문의바랍니다.</div>
+                    <div>※ 승인거절이 나면 고객센터에서 거절 사유에 대해 안내 차 전화를 드립니다.</div>
+                </div>
+                <hr>
+                <div class="col-12 mb-15">
+                    <form method="post" action="/ShelterW" enctype="multipart/form-data">
+                        <input type="hidden" name="username" Id="username" placeholder="username" th:value="${#authentication.principal.username}" >
+
+                        <div class="form-group">
+                            <label for="title">보호소명</label><br>
+                            <input type="text" name="title" Id="title" placeholder="제목을 입력해주세요." required class="width100p">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="title">주소</label> <input type="button" onclick="sample5_execDaumPostcode()" id="mapBtn" value="주소 검색"><br>
+                            <input type="text" id="address" name="address"  placeholder="주소" onclick="clickBtn()" class="width100p mb-15"><br>
+                            <input type="text" id="address2" name="address2"  placeholder="상세주소" class="width100p"><br>
+                            <div id="map" style="width:300px;height:300px;margin-top:10px;display:none"></div>
+                            <input type="hidden" id="lon" placeholder="경도" name="lon" value="" class="width100p">
+                            <input type="hidden" id="lat" placeholder="위도" name="lat" value="" class="width100p">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="title">전화번호</label>
+                            <input type="text" name="tel" Id="tel" placeholder="전화번호 입력해주세요." required class="width100p">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="content">소개</label>
+                            <div>
+                               <textarea name="content" id="content" style="width:100%;" rows="3" placeholder="소개 내용을 입력해주세요." required></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>고유번호증 - 이미지 첨부(png, jpeg, jpg만 가능합니다.)</label><br>
+                            <input name="file" type="file" accept="image/png, image/jpeg, image/jpg" required="">
+                        </div>
+
+                        <div id="inputFile">
+                        </div>
+
+
+                        <button class="btn bg_03A3F1 color-fff" type="submit">인증 요청하기</button>
+                    </form>
+
+                </div>
+            </section>
+            <section sec:authorize="isAnonymous()">
+                <div class="text-center">
+                    <div class="mt-15 mb-15">로그인한 회원만 글 작성이 가능합니다.</div>
+                    <div><a class="btn btn-primary" th:href="@{/loginForm}"}>로그인 하러가기</a></div>
+                </div>
+            </section>
+
+
+
+
+        </div>
+
+    </div>
+    <script type="text/javascript" th:src="@{/static/js/bbs_write.js}"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=96b98406e39c7bc15305d8b3cab103ed&libraries=services"></script>
+    <script>
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+        mapOption = {
+            center: new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표
+            level: 5 // 지도의 확대 레벨
+        };
+
+    //지도를 미리 생성
+    var map = new daum.maps.Map(mapContainer, mapOption);
+    //주소-좌표 변환 객체를 생성
+    var geocoder = new daum.maps.services.Geocoder();
+    //마커를 미리 생성
+    var marker = new daum.maps.Marker({
+        position: new daum.maps.LatLng(37.537187, 127.005476),
+        map: map
+    });
+
+
+    function sample5_execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                var addr = data.address; // 최종 주소 변수
+
+                // 주소 정보를 해당 필드에 넣는다.
+                document.getElementById("address").value = addr;
+                // 주소로 상세 정보를 검색
+                geocoder.addressSearch(data.address, function(results, status) {
+                    // 정상적으로 검색이 완료됐으면
+                    if (status === daum.maps.services.Status.OK) {
+
+                        var result = results[0]; //첫번째 결과의 값을 활용
+
+                        // 해당 주소에 대한 좌표를 받아서
+                        var coords = new daum.maps.LatLng(result.y, result.x);
+						// Lat/Har
+						$('input[name=lat]').attr('value',result.y);
+						$('input[name=lon]').attr('value',result.x);
+                        // 지도를 보여준다.
+                        mapContainer.style.display = "block";
+                        map.relayout();
+                        // 지도 중심을 변경한다.
+                        map.setCenter(coords);
+                        // 마커를 결과값으로 받은 위치로 옮긴다.
+                        marker.setPosition(coords)
+                    }
+                });
+            }
+        }).open();
+    }
+
+    function clickBtn(){
+	    document.getElementById("mapBtn").click();
+    }
+    </script>
+
+</th:block>
+
+</html>

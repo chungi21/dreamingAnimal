@@ -1,0 +1,99 @@
+@charset "UTF-8";
+.bg_03A3F1{
+    background: #03A3F1;
+}
+.border_03A3F1{
+    border: 1px solid #03A3F1;
+}
+.color-fff{
+    color: #ffffff;
+}
+.color-000{
+    color: #000000;
+}
+
+a.color-fff:hover{
+    color: #ffffff;
+}
+a.color-000:hover{
+    color: #000000;
+}
+
+.banner, .mainSubBanner, .pageBanner{
+    display: flex;
+    align-items: center;
+    background-size: cover;
+}
+
+.mainBanner{
+    height: 400px;
+    background-image: url('../img/common/bg_main_1.png');
+
+}
+
+.mainSubBanner{
+    height:200px;
+    background-image: url('../img/common/bg_page3.jpg');
+    background-position: bottom;
+}
+
+.mainSubBanner.mainSubBanner2{
+    height:200px;
+    background-image: url('../img/common/mainSubBanner.jpg');
+    background-position: bottom;
+}
+
+.c-searchForm{
+    gap:10px;
+}
+.width100p{
+    width: 100%;
+}
+
+.pageBanner{
+    height: 200px;
+    background-image: url('../img/common/bg_page3.jpg');
+    background-position: bottom;
+}
+
+.mb-15{
+    margin-bottom: 15px;
+}
+
+.mt-15{
+    margin-top: 15px;
+}
+
+input.readonly{
+    background: #eee;
+    border: 1px solid #eee;
+}
+
+.ovr{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+}
+.modal-body img{
+    max-width: 100%;
+}
+
+.card .img{
+    width: 100%;
+    height: 200px;
+    background-size:cover;
+    position:relative;
+
+}
+
+.card .img.end::before{
+    content:"보호종료";
+    width:100%;
+    height:200px;
+    background:#000;
+    padding: 10px;
+    color: #fff;
+    opacity: 0.4;
+    font-size: 20px;
+    position: absolute;
+}

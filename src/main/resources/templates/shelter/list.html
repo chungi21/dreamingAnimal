@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<th:block layout:fragment="content">
+    <div class="container">
+        <section>
+            <div class="row">
+                <div class="col-12 mb-30 text-center">
+
+
+                    <div id="myCarousel" class="carousel slide pageBanner banner" data-ride="carousel">
+
+                        <!-- Indicators -->
+                        <ul class="carousel-indicators">
+                            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                            <li data-target="#myCarousel" data-slide-to="1"></li>
+                        </ul>
+
+                        <!-- The slideshow -->
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <h3>보호소 찾기</h3>
+                                <div>사지 마시고 가까운 보호소에 들려 입양하세요. <br>입양 어렵지 않습니다.</div>
+                            </div>
+                            <div class="carousel-item">
+                                <h3>보호소 인증</h3>
+                                <div>
+                                    더 많은 사람들이 보호소를 찾을 수 있도록 보호소 위치를 알려주세요!<br>
+                                    <!-- ROLE_SHELTER 권한이 없는 경우 -->
+                                    <a  th:href="@{/ShelterW}" class="btn btn-primary mt-15" sec:authorize="isAuthenticated()">보호소 인증하기</a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Left and right controls -->
+                        <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                        </a>
+                        <a class="carousel-control-next" href="#myCarousel" data-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                        </a>
+                    </div>
+
+
+                </div>
+                <div class="col-12 mb-30">
+
+
+
+                    <div class="mb-15 mt-15">
+
+                        <table class="list-group" th:if="${endPage > 0}">
+                            <th>
+                                <tr class="list-group-item list-group-item-action active">
+                                    <th >보호소명</th>
+                                </tr>
+                            </th>
+                            <tbody>
+                            <tr th:each="board: ${list}" class="list-group-item list-group-item-action shelterName" data-toggle="modal" data-target="#shelterInfo" th:attr="data-shelter-id=${board.id}">
+                                <td th:text="${board.title}" ></td>
+                            </tr>
+                            </tbody>
+
+                        </table>
+                        <div th:if="${endPage == 0}" class="text-center mt-15 mb-15">
+                            등록되어있는 보호소가 없습니다.
+                        </div>
+
+                    </div>
+                    <!-- 리스트 출력 end -->
+                    <!-- 페이징, 검색 출력 start -->
+                    <div class="mb-30">
+                        <div class="d-flex justify-content-center" th:if="${endPage > 0}">
+                            <ul class="pagination">
+                                <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
+                                    <li class="page-item">
+                                        <a class="page-link" th:if="${page != nowPage}" th:href="@{/CommunityL(page = ${page - 1}, searchKeyword = ${param.searchKeyword})}" th:text="${page}"></a>
+                                        <strong class="page-link" th:if="${page == nowPage}" th:text="${page}" style="color : red" ></strong>
+                                    </li>
+                                </th:block>
+                            </ul>
+                        </div>
+
+
+                        <form th:action="@{/ShelterL}" method="get" class="c-searchForm d-flex">
+                            <input type="text" name="searchKeyword" placeholder="보호소명으로 검색해보세요." class="width100p">
+                            <button type="submit" class="btn btn-primary" >검색</button>
+                        </form>
+                    </div>
+                    <!-- 페이징, 검색 출력 end -->
+
+
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="shelterInfo" tabindex="-1" role="dialog" aria-labelledby="infoTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="infoTitle">보호소명</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <span id="infoImg"></span>
+                    </div>
+                    <div>
+                        <b>주소 :</b><br>
+                        <span id="infoAddr"></span><span id="infoAddr2"></span>
+                    </div><br>
+                    <div>
+                        <b>전화번호 :</b><br>
+                        <span id="infoTel"></span>
+                    </div><br>
+                    <div>
+                        <b>소개 :</b><br>
+                        <span id="infoContent"></span>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript" th:src="@{/static/js/shelterList.js}"></script>
+
+
+</th:block>
+
+
+</html>

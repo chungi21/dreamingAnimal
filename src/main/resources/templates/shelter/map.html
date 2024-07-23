@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<th:block layout:fragment="content">
+    <div class="container">
+        <section>
+            <div class="row">
+                <div class="col-12 mb-30 text-center">
+
+
+                    <div id="myCarousel" class="carousel slide pageBanner banner" data-ride="carousel">
+
+                        <!-- Indicators -->
+                        <ul class="carousel-indicators">
+                            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                            <li data-target="#myCarousel" data-slide-to="1"></li>
+                        </ul>
+
+                        <!-- The slideshow -->
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <h3>보호소 찾기</h3>
+                                <div>사지 마시고 가까운 보호소에 들려 입양하세요. <br>입양 어렵지 않습니다.</div>
+                            </div>
+                            <div class="carousel-item">
+                                <h3>보호소 인증</h3>
+                                <div>
+                                    더 많은 사람들이 보호소를 찾을 수 있도록 보호소 위치를 알려주세요!<br>
+                                    <a  th:href="@{/ShelterW}" class="btn btn-primary" sec:authorize="isAuthenticated()">보호소 인증하기</a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Left and right controls -->
+                        <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                        </a>
+                        <a class="carousel-control-next" href="#myCarousel" data-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-12 mb-30 mt-15">
+                    <div class="tab-pane fade show active" id="mapShelter">
+                        <div id="map" style="width:100%;height:350px;"></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="shelterInfo" tabindex="-1" role="dialog" aria-labelledby="infoTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="infoTitle">보호소명</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <span id="infoImg"></span>
+                    </div>
+                    <div>
+                        <b>주소 :</b><br>
+                        <span id="infoAddr"></span><span id="infoAddr2"></span>
+                    </div><br>
+                    <div>
+                        <b>전화번호 :</b><br>
+                        <span id="infoTel"></span>
+                    </div><br>
+                    <div>
+                        <b>소개 :</b><br>
+                        <span id="infoContent"></span>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript" th:src="@{/static/js/shelterList.js}"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=96b98406e39c7bc15305d8b3cab103ed&libraries=services,clusterer,drawing"></script>
+    <script>
+
+$(document).ready(function(){
+	viewMarker();
+
+});
+
+var lat = 37.5663174209601;
+var lng = 126.977829174031;
+var firstLevel = 9;
+
+
+
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+mapOption = {
+    center: new kakao.maps.LatLng(lat, lng), // 지도의 중심좌표
+    level: firstLevel // 지도의 확대 레벨
+};
+
+var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+var markers = [];
+var infowindows = [];
+
+
+
+
+// 마커 클러스터러를 생성합니다
+var clusterer = new kakao.maps.MarkerClusterer({
+    map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
+    averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
+    minLevel: 9 // 클러스터 할 최소 지도 레벨
+});
+
+kakao.maps.event.addListener(map,'zoom_changed',function(){
+	chkArea();
+});
+
+kakao.maps.event.addListener(map,'dragend',function(){
+	chkArea();
+});
+
+
+function chkArea(){
+	removeMarker();
+	viewMarker();
+}
+
+
+function removeMarker(){
+	var cnt = markers.length;
+	for(i=0;i<cnt;i++){
+		markers[i].setMap(null);
+	}
+	clusterer.clear();
+
+}
+
+
+// 지도에 위치 찍기
+function viewMarker(){
+
+    removeMarker();
+	// 화면의 영역값 가져오기
+	var bounds = map.getBounds();
+	var sw = bounds.getSouthWest();
+	var ne = bounds.getNorthEast();
+	var level = map.getLevel();
+
+	lon1 = sw.La;
+	lat1 = sw.Ma;
+	lon2 = ne.La;
+	lat2 = ne.Ma;
+    console.log("lon1 : "+lon1);
+
+    let data = {
+        lon1 : lon1,
+        lat1 : lat1,
+        lon2 : lon2,
+        lat2 : lat2
+    };
+
+    console.log(level);
+    // ajax start
+        // Ajax 요청으로 서버에서 위치 데이터 가져오기
+        $.ajax({
+            type: "POST",
+            url: `/shelterMap/${data.lon1}/${data.lon2}/${data.lat1}/${data.lat2}`,
+
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json"
+        }).done(function(resp) {
+
+            // 데이터에서 좌표 값을 가지고 마커를 표시합니다
+            // 마커 클러스터러로 관리할 마커 객체는 생성할 때 지도 객체를 설정하지 않습니다
+            var markers = $(resp).map(function(i, resp) {
+                return new kakao.maps.CustomOverlay({
+                    position : new kakao.maps.LatLng(resp.lat, resp.lon),
+                    content: `<div class="ovr bg_03A3F1 shelterName" data-shelter-id="${resp.id}" data-toggle="modal" data-target="#shelterInfo"></div>`
+                });
+            });
+
+
+            // 클러스터러에 마커들을 추가합니다
+            clusterer.addMarkers(markers);
+
+        }).fail(function(error) {
+            console.log(JSON.stringify(error));
+        });
+
+
+// ajax end
+}
+
+
+    </script>
+</th:block>
+
+
+</html>

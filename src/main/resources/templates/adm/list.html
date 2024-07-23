@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<th:block layout:fragment="content">
+    <div class="container">
+        <section>
+            <div class="row">
+
+                <div class="col-12 mt-15 mb-15">
+                    <div>
+                        <div class="mb-15">
+                            <a th:class="${approval == null} ? 'btn bg_03A3F1 color-fff' : 'btn border_03A3F1'" th:href="@{/admin/shelter(searchKeyword=${searchKeyword})}">전체</a>
+                            <a th:class="${approval == 1} ? 'btn bg_03A3F1 color-fff' : 'btn border_03A3F1'" th:href="@{/admin/shelter(searchKeyword=${searchKeyword},approval='1')}">승인</a>
+                            <a th:class="${approval == 0} ? 'btn bg_03A3F1 color-fff' : 'btn border_03A3F1'" th:href="@{/admin/shelter(searchKeyword=${searchKeyword},approval='0')}">미승인</a>
+                        </div>
+
+
+                        <form th:action="@{/adm/shelter}" method="get" class="c-searchForm d-flex">
+                            <input type="text" name="searchKeyword" placeholder="보호소명으로 검색해보세요." th:value="${searchKeyword}" class="width100p">
+                            <input type="hidden" name="approval" th:value="${approval}"><br>
+                            <button type="submit" class="btn btn-primary" >검색</button>
+                            <a th:href="@{/adm/shelter}" class="btn border_03A3F1">검색 초기화</a>
+                        </form>
+                    </div>
+
+                    <div class="mb-15 mt-15">
+
+                        <table class="list-group" th:if="${endPage > 0}">
+                            <th>
+                                <tr class="list-group-item list-group-item-action active">
+                                    <th >보호소명</th>
+                                    <th>승인여부</th>
+                                    <th>정보 보기</th>
+                                </tr>
+                            </th>
+                            <tbody>
+                            <tr th:each="board: ${list}" class="list-group-item list-group-item-action">
+                                <td th:text="${board.title}" ></td>
+                                <td th:text="${board.approval == 1} ? '승인완료' : '승인전'" class="btn border_03A3F1"></td>
+                                <td class="shelterName btn bg_03A3F1 color-fff"  data-toggle="modal" data-target="#shelterInfo" th:attr="data-shelter-id=${board.id}"> 정보 보기</td>
+                            </tr>
+                            </tbody>
+
+                        </table>
+                        <div th:if="${endPage == 0}">
+                            등록되어있는 보호소가 없습니다.
+                        </div>
+
+                    </div>
+                    <!-- 리스트 출력 end -->
+                    <!-- 페이징, 검색 출력 start -->
+                    <div class="mb-30">
+
+                        <div class="d-flex justify-content-center" th:if="${endPage > 0}">
+                            <ul class="pagination">
+                                <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
+                                    <li class="page-item">
+                                        <a class="page-link" th:if="${page != nowPage}" th:href="@{/CommunityL(page = ${page - 1}, searchKeyword = ${param.searchKeyword})}" th:text="${page}"></a>
+                                        <strong class="page-link" th:if="${page == nowPage}" th:text="${page}" style="color : red" ></strong>
+                                    </li>
+                                </th:block>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <!-- 페이징, 검색 출력 end -->
+
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+
+
+    <!-- Modal -->
+
+    <div class="modal fade" id="shelterInfo" tabindex="-1" role="dialog" aria-labelledby="infoTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" ><span id="infoTitle">보호소명</span><span id="isApproval"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <span id="infoImg"></span>
+                    </div>
+                    <div>
+                        <b>주소 :</b><br>
+                        <span id="infoAddr"></span><span id="infoAddr2"></span>
+                    </div><br>
+                    <div>
+                        <b>전화번호 :</b><br>
+                        <span id="infoTel"></span>
+                    </div><br>
+                    <div>
+                        <b>소개 :</b><br>
+                        <span id="infoContent"></span>
+                    </div>
+                </div>
+                <div class="modal-footer" id="modal-footer"></div>
+
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" th:src="@{/static/js/shelterListAdm.js}"></script>
+
+
+
+
+</th:block>
+
+
+</html>

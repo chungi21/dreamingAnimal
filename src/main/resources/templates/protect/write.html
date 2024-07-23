@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<th:block layout:fragment="content">
+    <div class="container">
+        <div class="row-cols-*">
+
+            <section sec:authorize="isAuthenticated()">
+                <div class="col-12 mb-30 text-center">
+                    <h3>보호동물 등록하기</h3>
+                </div>
+                <div class="col-12 mb-15">
+                    <form method="post" action="/protectW" enctype="multipart/form-data">
+                        <input type="hidden" name="username" Id="username" placeholder="username" th:value="${#authentication.principal.username}" >
+
+                        <div class="form-group">
+                            <label for="sido">공고번호</label>
+                            <input type="text" name="sido" Id="sido" placeholder="공고번호 시도" required>
+                            <input type="text" name="sigungu" Id="sigungu" placeholder="공고번호 시군구" required>
+                            <input type="text" name="byYear" Id="byYear" placeholder="공고번호 년도" required>
+                            <input type="text" name="num" Id="num" placeholder="공고번호 숫자" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="kind">품종</label>
+                            <select name="kind" id="kind">
+                                <option value="dog">강아지</option>
+                                <option value="cat">고양이</option>
+                                <option value="ect">기타</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="gender">품종</label>
+                            <select name="gender" id="gender">
+                                <option value="f">암컷</option>
+                                <option value="m">숫컷</option>
+                                <option value="q">미상</option>
+                            </select>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label for="color">색상</label>
+                            <input type="text" name="color" Id="color" placeholder="색상 입력해주세요.">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="color">나이</label>
+                            <input type="text" name="age" Id="age" placeholder="나이 입력해주세요." >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="color">체중</label>
+                            <input type="text" name="weight" Id="weight" placeholder="체중 입력해주세요.(단위:Kg)" >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="color">구조 시 특징</label>
+                            <input type="text" name="character" Id="character" placeholder="구조 시 특징을 입력해주세요.">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="color">발견장소</label>
+                            <input type="text" name="place" Id="place" placeholder="발견장소을 입력해주세요.">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="color">접수일시</label>
+                            <input type="date" name="date" Id="date">
+                        </div>
+
+                        <div class="form-group">
+                            <label>파일 - 이미지 첨부(png, jpeg, jpg만 가능합니다.)</label><br>
+                            <input name="file" type="file" accept="image/png, image/jpeg, image/jpg" required>
+                        </div>
+
+                        <button class="btn bg_03A3F1 color-fff" type="submit">등록하기</button>
+                    </form>
+
+                </div>
+            </section>
+            <section sec:authorize="isAnonymous()">
+                <div class="text-center">
+                    <div>로그인한 회원만 글 작성이 가능합니다.<div><br>
+                    <div><a class="btn btn-primary" th:href="@{/loginForm}"}>로그인 하러가기</a></div>
+                </div>
+            </section>
+
+
+
+
+        </div>
+
+    </div>
+    <script type="text/javascript" th:src="@{/static/js/bbs_write.js}"></script>
+    <script>
+        var now_utc = Date.now()
+        var timeOff = new Date().getTimezoneOffset()*60000;
+        var today = new Date(now_utc-timeOff).toISOString().split("T")[0];
+        document.getElementById("date").setAttribute("max", today);
+
+    </script>
+
+
+</th:block>
+
+</html>
