@@ -49,6 +49,7 @@
 * DataBase
   * H2
 <br/>
+
 ### 프론트엔드
 * HTML/CSS
 * JavaScript
@@ -56,6 +57,7 @@
 * BootStarp 4.1.1
 
 <br/><br/>
+
 ## 구조 설계
 
 ### DB 설계
@@ -73,6 +75,7 @@
 ![DA_FILE](https://github.com/user-attachments/assets/9af01741-c681-40be-b03c-34aaa69fec23)<br>
 
 <br/>
+
 ### API 설계
 * 커뮤니티 게시판 관련 API<br>
 ![커뮤니티 게시판](https://github.com/user-attachments/assets/a992a368-4638-4255-969c-e86b5193fcc7)<br>
@@ -352,7 +355,9 @@
   </ul>
   <img src="https://github.com/user-attachments/assets/3c1add58-11d0-41bb-bc8f-38dc13c2af5f" alt="메인화면">
 </details>
+
 <br/><br/>
+
 ## 후기
 * 이번 프로젝트는 독학 후 처음으로 진행한 것이라, 기획 단계에서부터 부족한 점이 있었습니다. 처음에는 미흡했던 부분을 보완하고자 중간중간 새로운 기능을 추가하기도 했고, 반대로 기능적으로 겹치는 부분은 빼기로 결정하며 아쉬움을 느끼기도 했습니다.
 * 코드를 작성하면서는 어떤 상황에서 GET과 POST를 사용하는 것이 맞을지, 그리고 @Controller와 @RestController 중 어떤 것을 선택해야 할지, 각 로직에서 어느 시점까지 DTO로 받아야 하고, 어디서 Entity로 변환해야 할지 등 다양한 부분 등 깊이 고민했습니다. 하지만 이러한 과정에서 단순히 현재의 추세를 따르기보다는, 왜 그런 추세가 생겨났는지, 그리고 그것이 실제로 어떻게 쓰이는지에 대해 이해하려고 노력했습니다. 그렇게 이유를 붙여가며 최선의 선택을 했습니다.
