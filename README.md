@@ -2,8 +2,7 @@
 > 웹 개발에 기본 인 게시판(파일첨부,댓글기능)과 회원가입을 만든 첫 번째 토이 프로젝트입니다.
 > Spring Boot, JPA, SpringSecurity, 카카오지도 API, 다음 주소 검색을 이용하여 만들어 보았습니다.
 ![bbs_community_list](https://github.com/user-attachments/assets/6ad2a67a-fc6f-42b1-9a1f-e33dacf8a760)
-
-
+<br><br>
 ## 목차
 * [프로젝트 소개](#프로젝트-소개)
 * [프로젝트 개요](#프로젝트-개요)
@@ -16,13 +15,13 @@
 * [개발내용](#개발내용)
 * [실행화면](#실행화면)
 * [후기](#후기)
-
+<br/><br/>
 ## 프로젝트 소개
 지금까지 학습한 내용을 바탕으로, 복습 겸 실습을 통해 내 것으로 만들기 위해 토이 프로젝트를 시작했습니다.<br>
 웹 개발의 기본인 게시판을 직접 만들어 보면서, 부족한 부분을 파악하고 이해도를 확인하려는 목적이 있습니다.<br>
 독학으로 관련 기술들을 배워 왔기에, 개인 프로젝트에서 미흡한 부분들이 있을 수 있습니다.<br>
 이러한 부분들을 하나씩 점검하고 개선해 나가면서, 앞으로 프로그래밍에 있어 어떤 방향성을 가져야 할지 고민하고 발전해 나가려 합니다.<br>
-
+<br/><br/>
 ## 프로젝트 개요
 * 프로젝트 명 : Dreaming Animal
 * 개발 인원 : 1 명
@@ -34,7 +33,7 @@
   * 보호동물 게시판  : CRUD 기능과 페이징 및 검색 처리, 그리고 권한에 따른 글쓰기 기능을 구현
   * 사용자 관리 : Security를 활용한 회원가입 및 로그인 기능(네이버, 구글 연동), 일반 회원가입 및 로그인, 회원가입 시 유효성 검사와 중복 검사 기능을 구현
   * 관리자 페이지 : 보호소 게시판에서 작성된 글의 작성자에 대한 수정(R) 기능을 관리할 수 있는 페이지를 제공
-
+<br/><br/>
 ## 사용 기술
 ### 백엔드
 * 주요 프레임워크 / 라이브러리
@@ -49,14 +48,14 @@
  
 * DataBase
   * H2
-
+<br/>
 ### 프론트엔드
 * HTML/CSS
 * JavaScript
 * Thymeleaf
 * BootStarp 4.1.1
 
-
+<br/><br/>
 ## 구조 설계
 
 ### DB 설계
@@ -73,7 +72,7 @@
 * 파일 테이블(테이블 명 : DA_BOARDFILE )<br>
 ![DA_FILE](https://github.com/user-attachments/assets/9af01741-c681-40be-b03c-34aaa69fec23)<br>
 
-
+<br/>
 ### API 설계
 * 커뮤니티 게시판 관련 API<br>
 ![커뮤니티 게시판](https://github.com/user-attachments/assets/a992a368-4638-4255-969c-e86b5193fcc7)<br>
@@ -88,25 +87,28 @@
 * 사용자 관련 API<br>
 ![사용자 관련](https://github.com/user-attachments/assets/849313ce-8e5c-4697-9171-68f568206622)<br>
 
-
+<br/><br/>
 ## 개발내용
 개발내용에 대한 정리 내용을 링크로 걸어놨습니다. 
 여러 글로 나눠 정리되어있는 부분은 걸려있는 블로그 링크의 글 아랫부분에 적어놨습니다.
-* [Spring Security - 회원가입 및 로그인 구현](https://luckygirljinny.tistory.com/299)
-* [Spring Security - 로그인 실패 시 에러메세지](https://luckygirljinny.tistory.com/318)
-* [Spring Security - 권한 설정](https://luckygirljinny.tistory.com/301)
-* [회원가입 유효성 검사](https://luckygirljinny.tistory.com/319)
-* [OAuth 2.0 소셜로그인(구글, 네이버)](https://luckygirljinny.tistory.com/320)
-* [게시판 CRUD 구현](https://luckygirljinny.tistory.com/321)
-* [게시판 댓글 CRUD 구현](https://luckygirljinny.tistory.com/322)
-* [게시판 페이징 구현](https://luckygirljinny.tistory.com/326)
-* [게시판 검색처리 구현(JPA)](https://luckygirljinny.tistory.com/310)
-* [게시판 검색처리 구현(동적 쿼리)](https://luckygirljinny.tistory.com/313)
-* [게시판 파일 업로드](https://luckygirljinny.tistory.com/314)
-* [Entity 연관관계 설정](https://luckygirljinny.tistory.com/323)
-* [카카오 지도 API 사용](https://luckygirljinny.tistory.com/324)
-* [다음 주소 API 사용](https://luckygirljinny.tistory.com/325)
-
+* 회원 관리 및보안 
+  * [Spring Security 기반 회원가입 및 로그인 기능 구현](https://luckygirljinny.tistory.com/299)
+  * [로그인 실패 시 에러 메시지 처리](https://luckygirljinny.tistory.com/318)
+  * [사용자 권한(Role) 설정](https://luckygirljinny.tistory.com/301)
+  * [회원가입 시 입력값 유효성 검사](https://luckygirljinny.tistory.com/319)
+  * [OAuth 2.0 소셜 로그인(Google, Naver) 연동](https://luckygirljinny.tistory.com/320)
+* 게시판 기능
+  * [게시글 CRUD 구현](https://luckygirljinny.tistory.com/321)
+  * [댓글 CRUD 구현](https://luckygirljinny.tistory.com/322)
+  * [게시판 페이징 처리](https://luckygirljinny.tistory.com/326)
+  * [게시판 검색처리 구현(JPA 동적 쿼리)](https://luckygirljinny.tistory.com/313)
+  * [게시판 파일 업로드 기능 구현](https://luckygirljinny.tistory.com/314)
+* 데이터베이스 및 엔티티 관리
+  * [Entity 연관관계 설정 (회원–게시글–댓글 관계 매핑)](https://luckygirljinny.tistory.com/323)
+* 외부 API 연동
+  * [카카오 지도 API 사용(지도 표시 및 위치 연동)](https://luckygirljinny.tistory.com/324)
+  * [다음 주소 API 사용(주소 검색 및 자동 입력)](https://luckygirljinny.tistory.com/325)
+<br/><br/>
 ## 실행화면
 <details>
 <summary>커뮤니티 게시판 관련 화면</summary>
@@ -350,7 +352,7 @@
   </ul>
   <img src="https://github.com/user-attachments/assets/3c1add58-11d0-41bb-bc8f-38dc13c2af5f" alt="메인화면">
 </details>
-
+<br/><br/>
 ## 후기
 * 이번 프로젝트는 독학 후 처음으로 진행한 것이라, 기획 단계에서부터 부족한 점이 있었습니다. 처음에는 미흡했던 부분을 보완하고자 중간중간 새로운 기능을 추가하기도 했고, 반대로 기능적으로 겹치는 부분은 빼기로 결정하며 아쉬움을 느끼기도 했습니다.
 * 코드를 작성하면서는 어떤 상황에서 GET과 POST를 사용하는 것이 맞을지, 그리고 @Controller와 @RestController 중 어떤 것을 선택해야 할지, 각 로직에서 어느 시점까지 DTO로 받아야 하고, 어디서 Entity로 변환해야 할지 등 다양한 부분 등 깊이 고민했습니다. 하지만 이러한 과정에서 단순히 현재의 추세를 따르기보다는, 왜 그런 추세가 생겨났는지, 그리고 그것이 실제로 어떻게 쓰이는지에 대해 이해하려고 노력했습니다. 그렇게 이유를 붙여가며 최선의 선택을 했습니다.
