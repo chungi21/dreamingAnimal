@@ -1,6 +1,6 @@
 # 1st Toy Project - Dreaming Animal
 > 웹 개발의 기본인 게시판(파일첨부, 댓글, 조회수)과 회원 관리(Security, OAuth 연동)를 중심으로 한 첫 번째 토이 프로젝트입니다.<br>
-> Spring Boot, JPA, Spring Security, 카카오 지도 API, 다음 주소 검색을 활용하여, 커뮤니티 '게시판 CRUD 및 댓글/조회수 기능', '보호소/보호동물 게시판 CRUD, 검색/페이징, 위치 기반 글 작성', '관리자 페이지를 통한 게시물 관리' 등을 구현하였습니다.
+> Spring Boot, JPA, Spring Security, 카카오 지도 API, 다음 주소 검색을 활용하여, '커뮤니티 게시판 CRUD 및 댓글/조회수 기능', '보호소/보호동물 게시판 CRUD, 검색/페이징, 위치 기반 글 작성', '관리자 페이지를 통한 게시물 관리' 등을 구현하였습니다.
 ![bbs_community_list](https://github.com/user-attachments/assets/6ad2a67a-fc6f-42b1-9a1f-e33dacf8a760)
 <br><br>
 ## 목차
